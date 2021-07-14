@@ -36,35 +36,29 @@ pas_elem = driver.find_element_by_name('password')
 pas_elem.send_keys(PASS)
 pas_elem.send_keys(Keys.ENTER)
 
-time.sleep(2)
 
-# for i in range(5):
-#     mail_list = driver.find_elements_by_class_name('js-letter-list-item')
-#     action = ActionChains(driver)
-#     action.move_to_element(mail_list[-1])
-#     action.perform()
-#     time.sleep(3)
+email_list = WebDriverWait(driver, 10)
+email_list.until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, 'js-tooltip-direction_letter-bottom')))
 
-# link_all = set()
-# time.sleep(3)
-# email_list = driver.find_elements_by_class_name('js-tooltip-direction_letter-bottom')
-# link_list = list(map(lambda el: el.get_attribute('href'), email_list))
-# link_all = link_all.union(set(link_list))
-#
-# while True:
-#     actions = ActionChains(driver)
-#     actions.move_to_element(email_list[-1])
-#     actions.perform()
-#
-#     time.sleep(3)
-#     email_list = driver.find_elements_by_class_name('js-tooltip-direction_letter-bottom')
-#     link_list = list(map(lambda el: el.get_attribute('href'), email_list))
-#
-#     if link_list[-1] not in link_all:
-#         link_all = link_all.union(set(link_list))
-#         continue
-#     else:
-#         break
+link_all = set()
+email_list = driver.find_elements_by_class_name('js-tooltip-direction_letter-bottom')
+link_list = list(map(lambda el: el.get_attribute('href'), email_list))
+link_all = link_all.union(set(link_list))
+
+while True:
+    actions = ActionChains(driver)
+    actions.move_to_element(email_list[-1])
+    actions.perform()
+
+    time.sleep(5)
+    email_list = driver.find_elements_by_class_name('js-tooltip-direction_letter-bottom')
+    link_list = list(map(lambda el: el.get_attribute('href'), email_list))
+
+    if link_list[-1] not in link_all:
+        link_all = link_all.union(set(link_list))
+        continue
+    else:
+        break
 
 
 mail_list = driver.find_elements_by_class_name('js-letter-list-item')
